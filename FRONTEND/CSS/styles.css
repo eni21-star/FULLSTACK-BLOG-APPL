@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Workbench&display=swap');
+
+body { 
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    height: 100%;
+    background-color: aliceblue;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    flex-direction: column;
+}
+
+.container {
+
+    display: flex;
+    height: 100%;
+
+    
+    flex-direction: column;
+    background-color:aliceblue;
+    padding: 20px;
+
+}
+.web-name{
+    font-family: 'Workbench', sans-serif;
+    color: rgb(43, 58, 104);
+}
+.web-name-div{
+    width: 100%;
+    text-align: center;
+}
+.input-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 90px;
+    padding: 10px 10px;
+    width: auto;
+    height: auto;
+    max-width: 800px;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, .3);
+    border-radius: 10px;
+}
+
+.input {
+    font-family: 'Poppins', sans-serif;
+    min-width: 600px;
+    box-sizing: border-box;
+    background: transparent;
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 5px 19px;
+    outline: none;
+}
+
+.input:active {
+    border: none;
+    outline: none;
+}
+
+.submit {
+
+    width: 100%;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    
+    background-color:rgb(43, 58, 104);
+    color: white;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.blog {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .3);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .3);
+    max-width: 775px;
+    min-width: 775px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.blog-header-text a{
+color: rgb(43, 58, 104);
+}
+
+.blog-text {
+    white-space: wrap;
+    /* Prevent line breaks within the text */
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    /* Hide overflowing content */
+    text-overflow: ellipsis
+}
+
+.blog-title {
+    margin-bottom: -10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.user-name {
+    color: grey;
+    font-family: 'Poppins', sans-serif;
+    
+    margin-bottom: 0px;
+}
+
+.date {
+    color: rgb(201, 129, 141);
+    font-size: 13px;
+}
+.edi-del{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+.Delete{
+    
+    height: 50px;
+    width: 100%;
+    color: black;
+    border: 2px solid rgb(43, 58, 104);
+    margin-top: 10px;
+    cursor: pointer;
+    background: transparent;
+
+    border-radius: 10px;
+}
+.title-name{
+    width: 100%;
+    height: auto;
+    background: transparent;
+    box-sizing: border-box;
+    display: flex;
+    gap: 10px;
+    border-radius: 13px;
+    justify-content: space-evenly;
+
+}
+.title-name input{
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, .3);
+    border-radius: 13px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 5px 13px;
+}
+#input-confirm{
+
+    width: 100%;
+
+
+
+}
+.inp-confirm{
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    margin-top: -80px;
+    display: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+
+}
+.inp-update{
+  
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    margin-top: -80px;
+    display: none;
+    border-radius: 10px;
+    box-sizing: border-box;  
+}
+.Update{
+    
+    height: 50px;
+    width: 100%;
+    color: white;
+    border: 2px solid rgb(43, 58, 104);
+    margin-top: 10px;
+    cursor: pointer;
+    background-color: rgb(43, 58, 104);
+
+    border-radius: 10px;
+}
+@media (max-width: 1000px) {
+
+    .input-form {
+        display: flex;
+        margin-bottom: 90px;
+        flex-direction: column;
+        padding: 5px 5px;
+        width: auto;
+        height: auto;
+        background: transparent;
+        border: 2px solid rgba(0, 0, 0, .3);
+        border-radius: 10px;
+    }
+
+    .submit {
+
+        width: 100%;
+        height: 50px;
+        font-size: 20px;
+        border: none;
+        background-color:  rgb(43, 58, 104);
+        color: white;
+        border-radius: 10px;
+    }
+
+}

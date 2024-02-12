@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <link rel="stylesheet" href="./CSS/styles.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <div class="container" id="container">
+
+        <div class="input-form">
+
+            <div class="title-name">
+                <input type="text" placeholder="Enter your blog title.." id="blogTitle"> <input type="text"
+                    placeholder="Enter your Username.." id="blogName">
+            </div>
+            <div>
+                <input type="text" class="input" placeholder="enter your blog text..." id="input">
+            </div>
+            <div>
+                <button type="submit" class="submit" id="submit">post</button>
+
+            </div>
+
+        </div>
+
+        <div id="input-confirm">
+
+            <input placeholder=" enter the new blog text and press enter to update blog.." id="inp-update"
+                class="inp-update" name="blogText">
+
+        </div>
+        <div class="web-name-div">
+            <h1 class="web-name"></h1>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+     // goodluck understanding :) 
+        const socket = io();
+        const body = document.body;
+        const container = document.getElementById('container');
+        const blog = document.getElementById('blog');
+        const sbmBtn = document.getElementById('submit');
+        const blogtext = document.getElementById('input');
+        const formattedDate = getFormattedDate();
+        const edit = document.getElementById('edit');
+        const Btitle = document.getElementById('blogTitle');//this is the blog-title you send to the DB
+        const titleBlog = document.getElementById("blog-title"); //the username of whoever is logged in
+        const bloguserName = document.getElementById('blogName');
+
+        let blogTextArray = [];
+        let bloguserNameArray = [];
+        let blogTitleArray = [];
+        let blogLinkArray = [];
+        const blogpost = document.createElement('div');
+        blogpost.classList.add('blog');
+        blogpost.id = 'Blog';
+
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchData();
+
+
+        });
+        sbmBtn.addEventListener('click', () => {
+
+            socket.emit('blogData', {
+                blogText: blogtext.value,
+                blogTitle: Btitle.value,
+                username: bloguserName.value
+            });
+
+
+            window.location.reload();
+
+            blogtext.value = '';
+            Btitle.value = '';
+            bloguserName.value = '';
+
+
+        })
+
+
+
+
+        function getFormattedDate() {
+            const currentDate = new Date();
+
+
+            const day = currentDate.getDate();
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const month = monthNames[currentDate.getMonth()];
+            const year = currentDate.getFullYear();
+
+
+            function getOrdinalSuffix(number) {
+                const suffixes = ['th', 'st', 'nd', 'rd'];
+                const v = number % 100;
+                return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+            }
+
+
+            const ordinalDay = getOrdinalSuffix(day);
+
+
+            const formattedDate = `${ordinalDay} ${month} ${year}`;
+
+            return formattedDate;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        async function fetchData() {
+
+            const blogpost = document.createElement('div');
+            blogpost.classList.add('blog');
+            const Apiurl = 'http://localhost:5000/req';
+            const get = await fetch(Apiurl);
+            const response = await get.json();
+            console.log(response);
+            //looping thriugh the data gotten from the database and the then getting individual values
+            response.forEach(function (item) {
+
+                blogTextArray.push(item.blogText);
+                bloguserNameArray.push(item.username);
+                blogTitleArray.push(item.blogTitle);
+                blogLinkArray.push(item.url);
+            });
+
+            //console.log(blogTextArray, blogTitleArray, bloguserNameArray);
+
+            for (let i = 0; i < blogTextArray.length; i++) {
+
+                const blogpost = document.createElement('div');//create it in the loop so the db doesnt overwrite blogpost each time data is fetched
+                blogpost.classList.add('blog');
+                blogpost.innerHTML = `
+                  <div class="blog-header-text">
+                  <h2 class="blog-title" id="blog-title">${blogTitleArray[i]}</h2>
+                  <p class="user-name" id="user-name">${bloguserNameArray[i]}</p>
+                  <span class="date">${formattedDate}</span>
+                  <p class="blog-text" id="blog-text">${blogTextArray[i]}</p>
+        
+        
+                 <button class="Update" id="Update">Update</button>
+                 <button class="Delete" id="Delete">Delete</button>
+                 </div>`;
+                container.appendChild(blogpost);
+            }
+
+            deleteBlog();
+
+            updatesBlog();
+        }
+
+
+
+
+
+
+
+
+
+
+        async function updatesBlog() {
+            try {
+                const updatesBlog = document.getElementById('inp-update');
+                const deleteButtons = document.querySelectorAll('.Update');//select all update button in the documents body
+                deleteButtons.forEach(button => { //loop through all the buttons and add event listeners to them
+                    button.addEventListener('click', () => {
+
+                        const blogHeader = button.closest('.blog-header-text');// get the closet div to each button
+
+
+                        const blogTitleElement = blogHeader.querySelector('.blog-title'); // get the title of the nearest title element
+
+                        const blogTextElement = blogHeader.querySelector('.blog-text');
+
+
+                        const blogText = blogTextElement.textContent;
+
+                        const blogTitlePutApi = blogTitleElement.textContent; // the title that gets sent to the REST api 
+
+                        updatesBlog.style.display = 'block';
+                        updatesBlog.value = blogText;
+                        updatesBlog.scrollTop = updatesBlog.scrollIntoView;
+
+
+                        updatesBlog.addEventListener('keyup', async (e) => {  // the event listener for the input box has to be inside the event listener for the update btn in order to get access to some variables
+                            if (e.key === 'Enter') {
+
+                                const blogData = {
+                                    text: updatesBlog.value
+                                }
+                                const get = await fetch(`http://localhost:5000/edit/${blogTitlePutApi}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json' 
+                                    },
+                                    body: JSON.stringify({ blogText: blogData.text }) // sending the  data to server side
+                                })
+                                const res = await get.json();
+
+                                updatesBlog.value = "";
+                                if (res.message === 1) {
+                                    window.location.reload();
+                                }
+
+
+                            }
+                        })
+
+                    })
+
+                })
+
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        async function deleteBlog() {
+            const confirmDel = document.getElementById('inp-confirm');
+            
+            document.addEventListener("click", (e) => {
+            
+                let target = e.target;
+            // so that each delete button only delete's its parent div and not any other div 
+                if (target.classList.contains("Delete")) {
+                    target.parentElement.parentElement.remove();
+                } else {
+                    console.log("error")
+                }
+
+            })
+
+            const deleteButtons = document.querySelectorAll('.Delete');
+
+            // Iterate through each delete button
+            deleteButtons.forEach(button => {
+                // Add click event listener to each delete button
+                button.addEventListener('click', async () => {
+                    const blogHeader = button.closest('.blog-header-text');
+
+                    // Find the blog title element within the parent element
+                    const blogTitleElement = blogHeader.querySelector('.blog-title');
+
+                    // Extract the blog title text
+                    const blogTitle = blogTitleElement.textContent;
+                    console.log(blogTitle);
+                    for (let i = 0; i < blogTitleArray.length; i++) {
+                        if (blogTitleArray[i] === blogTitle) {
+
+                            const Apiurl = `http://localhost:5000/delete/${blogTitle}`
+                            const get = await fetch(Apiurl, {
+                                method: 'DELETE'
+                            })
+                            const res = await get.json()
+                            if (res.message === 1) {
+                                console.log("data removed from database successfully")
+                            }
+
+                        }
+                    }
+
+                });
+            })
+
+        }
+    </script>
+</body>
+
+</html>
