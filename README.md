@@ -1,0 +1,3 @@
+# FULLSTACK-BLOG-APPL
+A simple full stack blog application which utilize the use of all CRUD operations
+My full stack blog webapp is a dynamic and interactive platform that allows users to create, edit, and publish blog posts. The app is built using Node.js for the backend, EJS for the templating engine, and MongoDB for the database. Users can register and login to their accounts, create and manage their own blog posts, and interact with other users through comments and likes. The app also includes features such as search functionality, categories, and user profiles. Overall, it provides a seamless and user-friendly experience for both bloggers and readers.
